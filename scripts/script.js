@@ -29,7 +29,7 @@ if(!YTProVer){
 var YTProVer="3.87";
 var ytoldV="";
 var isF=false;   //what is this for?
-var isAp=false; // oh it's for bg play
+var isAp=false; // oh it's for bg play 
 const originalPause = HTMLMediaElement.prototype.pause; // well long story short , save the original pause function
 window.PIPause = false; // for pausing video when in PIP
 window.pauseAllowed = true; // allow pause by default
@@ -96,7 +96,7 @@ var isD=false;
 var dislikes="...";
 
 
-//Force Dark mode
+//Force Dark mode 
 /**
 if(document.cookie.indexOf("PREF") < 0 || document.cookie.indexOf("f6=") < 0){
 document.cookie.replace(
@@ -184,20 +184,15 @@ return origChecker(type);
 
 override();
 
-window.__YTPRO_INTERCEPT__ = true;
 
-// Nhận info trong môi trường web/debug (nếu không có Android.onInfo)
-window.onYtproInfo = function (info) {
-  try {
-    if (window.Android && typeof Android.onInfo === 'function') {
-      Android.onInfo(JSON.stringify(info));
-    } else {
-      console.log('[YTPRO] onYtproInfo:', info);
-    }
-  } catch (e) {
-    console.error('[YTPRO] onYtproInfo error:', e);
-  }
-};
+
+
+
+function insertAfter(referenceNode, newNode) {
+try{
+referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}catch{}
+}
 
 
 /*wait for the element , using observer*/
@@ -332,7 +327,7 @@ try{document.getElementsByClassName('ytProgressBarLineProgressBarLine')[0].appen
 
 
 /*Fetch The Dislikes*/
-async function fDislikes(url){
+async function fDislikes(url){ 
 var Url=new URL(url);
 var vID="";
 if(Url.pathname.indexOf("shorts") > -1){
@@ -437,7 +432,7 @@ if((window.location.pathname.indexOf("watch") > -1) || (window.location.pathname
 var unV=setInterval(() => {
 
 
-/*Unmute The Video*/
+/*Unmute The Video*/ 
 
 document.getElementsByClassName('video-stream')[0].muted=false;
 
@@ -713,13 +708,13 @@ ytpSetI.innerHTML+=`<br><b style='font-size:18px' >YT PRO Settings</b>
 <br>
 <div>Autoskip Sponsors <span onclick="sttCnf(this,'autoSpn');" style="${sttCnf(0,0,"autoSpn")}" ><b style="${sttCnf(0,1,"autoSpn")}"></b></span></div>
 <br>
-<div>Auto FitScreen <span onclick="sttCnf(this,'fitS');" style="${sttCnf(0,0,"fitS")}" ><b style="${sttCnf(0,1,"fitS")}" ></b></span></div>
+<div>Auto FitScreen <span onclick="sttCnf(this,'fitS');" style="${sttCnf(0,0,"fitS")}" ><b style="${sttCnf(0,1,"fitS")}" ></b></span></div> 
 <br>
-<div>Force Zoom <span onclick="sttCnf(this,'fzoom');" style="${sttCnf(0,0,"fzoom")}" ><b style="${sttCnf(0,1,"fzoom")}" ></b></span></div>
+<div>Force Zoom <span onclick="sttCnf(this,'fzoom');" style="${sttCnf(0,0,"fzoom")}" ><b style="${sttCnf(0,1,"fzoom")}" ></b></span></div> 
 <br>
-<div>Background Play <span onclick="sttCnf(this,'bgplay');" style="${sttCnf(0,0,"bgplay")}" ><b style="${sttCnf(0,1,"bgplay")}" ></b></span></div>
+<div>Background Play <span onclick="sttCnf(this,'bgplay');" style="${sttCnf(0,0,"bgplay")}" ><b style="${sttCnf(0,1,"bgplay")}" ></b></span></div> 
 <br>
-<div>Hide Shorts <span onclick="sttCnf(this,'shorts');" style="${sttCnf(0,0,"shorts")}" ><b style="${sttCnf(0,1,"shorts")}" ></b></span></div>
+<div>Hide Shorts <span onclick="sttCnf(this,'shorts');" style="${sttCnf(0,0,"shorts")}" ><b style="${sttCnf(0,1,"shorts")}" ></b></span></div> 
 <br>
 <div>Use single Gemini chat <span onclick="sttCnf(this,'saveCInfo');" style="${sttCnf(0,0,"saveCInfo")}" ><b style="${sttCnf(0,1,"saveCInfo")}"></b></span></div>
 <br>
@@ -778,7 +773,7 @@ ${localStorage.getItem("prompt")}
 <z style="margin-right:6px">Made with </z>
 
 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff" viewBox="-1 -1 18 18">
-<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" 
 stroke="black" ${ !isD ? "stroke-width='1'" : "" } stroke-linejoin="round" stroke-linecap="round"/>
 </svg>
 
@@ -940,7 +935,7 @@ history.back();
 });
 
 ytproDownDiv.setAttribute("style",`
-height:80%;width:85%;overflow:auto;background:${isD ? "#212121" : "#f1f1f1"};
+height:50%;width:85%;overflow:auto;background:${isD ? "#212121" : "#f1f1f1"};
 position:absolute;bottom:20px;
 z-index:99999999999999;padding:20px;text-align:center;border-radius:25px;text-align:center;
 `);
@@ -997,13 +992,9 @@ else if(ex ==".mp3"){
 mtype="audio/mp3";
 }
 
-console.log(o.getAttribute("data-ytprourl"))
+//console.log(o.getAttribute("data-ytprourl"))
 
 Android.downvid((o.getAttribute("data-ytprotit")+ex),o.getAttribute("data-ytprourl"),mtype);
-}
-
-function getInfo(info) {
-Android.getInfoVideoDownload(info);
 }
 
 
@@ -1118,14 +1109,14 @@ document.body.appendChild(script2);
 `;
 
 /*
-var script = document.createElement('script');
-script.src="//cdn.jsdelivr.net/npm/eruda";
+var script = document.createElement('script'); 
+script.src="//cdn.jsdelivr.net/npm/eruda"; 
 document.body.appendChild(script);
 script.onload = function () { eruda.init() } ;
 */
 
 
-
+  
 var source = doc.createTextNode(scriptSource);
 script.appendChild(source);
 doc.body.appendChild(script);
@@ -1178,14 +1169,14 @@ player.removeAttribute("ogTop");
 /*JAVA Callback for AccessToken*/
 function callbackSNlM0e(){
 return new Promise(resolve => {
-callbackSNlM0e.resolve = resolve;
+callbackSNlM0e.resolve = resolve; 
 });
 }
 
 /*JAVA Callback for Gemini Response*/
 function callbackGeminiClient(){
 return new Promise(resolve => {
-callbackGeminiClient.resolve = resolve;
+callbackGeminiClient.resolve = resolve; 
 });
 }
 
@@ -1278,7 +1269,7 @@ text+=`<center><img alt="${img[0][4]}" src="${img[0][0][0]}"></center>`;
 let converter = new showdown.Converter();
 let html = modifyTimestamps(converter.makeHtml(text));
 
-let thoughtsHtml=(thoughts != null) ? `<button onclick="(this.nextElementSibling.style.height=='auto') ? (this.children[0].style.transform='rotate(-90deg)',this.nextElementSibling.style.height='0') : (this.children[0].style.transform='rotate(90deg)',this.nextElementSibling.style.height='auto');" class="think" >Show Thinking
+let thoughtsHtml=(thoughts != null) ? `<button onclick="(this.nextElementSibling.style.height=='auto') ? (this.children[0].style.transform='rotate(-90deg)',this.nextElementSibling.style.height='0') : (this.children[0].style.transform='rotate(90deg)',this.nextElementSibling.style.height='auto');" class="think" >Show Thinking 
 <svg xmlns="http://www.w3.org/2000/svg" style="transform:rotate(-90deg);margin-left:10px" width="16" height="16" fill="${isD ? "#ccc" : "#444"}" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
 </svg></button>
@@ -1361,7 +1352,7 @@ var headers=JSON.stringify({
 "accept": "*/*",
 "accept-language": "en",
 "content-type":"application/x-www-form-urlencoded;charset=UTF-8",
-"x-goog-ext-525001261-jspb": GeminiModels[localStorage.getItem('geminiModel')],
+"x-goog-ext-525001261-jspb": GeminiModels[localStorage.getItem('geminiModel')], 
 "x-same-domain": "1",
 "cookie": secured,
 "Referer": "https://gemini.google.com/",
@@ -1382,9 +1373,9 @@ document.body.appendChild(sd);
 
 
 
-var prompt=localStorage.getItem('prompt').replaceAll("{url}",window.location.href).replaceAll("{videoId}",new URL(window.location.href).searchParams.get("v")).replaceAll("{title}",document.getElementsByClassName('slim-video-metadata-header')[0].textContent.replaceAll("|","").replaceAll("\\","").replaceAll("?","").replaceAll("*","").replaceAll("<","").replaceAll("/","").replaceAll(":","").replaceAll('"',"").replaceAll(">",""));
+var prompt=localStorage.getItem('prompt').replaceAll("{url}",window.location.href).replaceAll("{videoId}",new URL(window.location.href).searchParams.get("v")).replaceAll("{title}",document.getElementsByClassName('slim-video-metadata-header')[0].textContent.replaceAll("|","").replaceAll("\\","").replaceAll("?","").replaceAll("*","").replaceAll("<","").replaceAll("/","").replaceAll(":","").replaceAll('"',"").replaceAll(">","")); 
 //`send me details with timestamps and images related to this youtube com video ${}`;
-// , including all the aspects and scopes with timestamp , add facts in the analysis as well ,Here's the youtube
+// , including all the aspects and scopes with timestamp , add facts in the analysis as well ,Here's the youtube 
 
 
 
@@ -1420,7 +1411,7 @@ if(window.location.href.indexOf("youtube.com/watch") > -1){
 
 
 try{
-var elm=document.getElementsByTagName("dislike-button-view-model")[0].children[0];
+var elm=document.getElementsByTagName("dislike-button-view-model")[0].children[0]; 
 elm.children[0].children[0].children[0].style.width="90px";
 elm.children[0].children[0].children[0].children[0].style.position="absolute";
 
@@ -1597,7 +1588,7 @@ ytproFavElem.addEventListener("click",()=>{ytProHeart(ytproFavElem);});
 var ytproDownVidElem=document.createElement("div");
 sty(ytproDownVidElem);
 ytproDownVidElem.style.width="140px";
-ytproDownVidElem.innerHTML=`${downBtn.replace('width="18"','width="24"').replace('height="18"','height="24"')}<span style="margin-left:2px">DL Video<span>`;
+ytproDownVidElem.innerHTML=`${downBtn.replace('width="18"','width="24"').replace('height="18"','height="24"')}<span style="margin-left:2px">Download<span>`;
 ytproMainDiv.appendChild(ytproDownVidElem);
 ytproDownVidElem.addEventListener("click",
 function(){
@@ -1805,7 +1796,7 @@ var vid=(new URLSearchParams(window.location.search)).get('v') || window.locatio
 
 var video=document.getElementsByClassName('video-stream')[0];
 var canvas = document.createElement('canvas');
-canvas.style.width = "1600px";
+canvas.style.width = "1600px"; 
 canvas.style.height = "900px";
 canvas.style.background="black";
 var context = canvas.getContext('2d');
@@ -1918,7 +1909,7 @@ var v=document.getElementsByClassName('video-stream')[0];
 
 
 
-if(!( (pip || (!pip && !v.paused)) && (window.location.pathname.indexOf("watch") > 0))) return;
+if(!( (pip || (!pip && !v.paused)) && (window.location.pathname.indexOf("watch") > 0))) return; 
 
 
 
@@ -2242,7 +2233,7 @@ console.log(scale)
 
 
 mE.addEventListener("click",()=>{
-var scale= Math.max((screen.height / Vv.getBoundingClientRect().height) , (screen.width / Vv.getBoundingClientRect().width));
+var scale= Math.max((screen.height / Vv.getBoundingClientRect().height) , (screen.width / Vv.getBoundingClientRect().width)); 
 
 if (scale < 1) scale = 1;
 if((Vv.getBoundingClientRect().width / Vv.offsetWidth) > 1){
@@ -2360,7 +2351,7 @@ document.body.appendChild(x);
 
 
 
-window.onload = function(){
+window.onload = function(){ 
 if(parseFloat(Android.getInfo()) < parseFloat(YTProVer) && (window.location.href == "https://m.youtube.com/" || window.location.href == "https://m.youtube.com") ){
 updateModel();
 }
@@ -2387,7 +2378,7 @@ const url=new URL(anchor.href).searchParams.get("q");
 setTimeout(()=>{Android.oplink(url)},50);
 
 event.preventDefault();
-event.stopPropagation();
+event.stopPropagation(); 
 
 }
 
