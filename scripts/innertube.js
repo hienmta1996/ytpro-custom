@@ -78,7 +78,7 @@ async function getDeciphers(){
 
 
 return new Promise(async (resolve,reject)=>{
-
+console.log("================== start get info ");
 
 
 var scripts = document.getElementsByTagName('script');
@@ -89,9 +89,7 @@ player_id=scripts[i].src.match("(?<=player\/).*(?=\/player)");
 }
 
 
-
 visitorData = ProtoUtils.encodeVisitorData(Utils.generateRandomString(11), Math.floor(Date.now() / 1000));
-
 write("Fetching PoTokens...");
 
 const coldStartToken = BG.PoToken.generatePlaceholder(visitorData);
@@ -108,6 +106,7 @@ const ast = Jinter.parseScript(player_js, { ecmaVersion: 'latest', ranges: true 
 
 
 sig_timestamp = Player.extractSigTimestamp(player_js);
+
 const global_variable = Player.extractGlobalVariable(player_js, ast);
 sig_sc = Player.extractSigSourceCode(player_js, global_variable);
 nsig_sc = Player.extractNSigSourceCode(player_js, ast, global_variable);
@@ -126,7 +125,7 @@ const player = await Player.fromSource(player_id, sig_timestamp, null, sig_sc, n
 
 
 
-
+console.log("================== end get info ");
 write("Deciphered Scripts")
 
 resolve("done");
@@ -218,10 +217,6 @@ else{
 id=new URLSearchParams(window.location.search).get("v");
 }
 
-console.log("===================== sig_timestamp", sig_timestamp);
-console.log("===================== visitorData", visitorData);
-console.log("===================== poToken", poToken);
-console.log("===================== cver", cver);
 var body={
 "videoId": id,
 "racyCheckOk": true,
