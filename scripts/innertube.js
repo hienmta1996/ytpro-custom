@@ -8,6 +8,28 @@ import Jinter from 'https://cdn.jsdelivr.net/npm/jintr@3.3.1/+esm';
 import { BG } from 'https://cdn.jsdelivr.net/npm/bgutils-js@3.2.0/dist/index.min.js';
 import {Player,Innertube, ProtoUtils, UniversalCache, Utils } from 'https://cdn.jsdelivr.net/npm/youtubei.js@13.4.0/bundle/browser.min.js';
 
+
+function write(x) {
+  try {
+    if (typeof x === 'object') x = JSON.stringify(x, null, 2);
+    const el = document.getElementById('downytprodiv');
+    if (el) el.innerHTML = x;
+    else console.log('[YTPRO]', x);
+  } catch (e) {
+    console.log('[YTPRO] write error', e);
+  }
+}
+
+
+
+
+var cver="19.35.36";
+var player_id;
+var poToken,visitorData;
+var sig_timestamp,nsig_sc,sig_sc;
+
+
+
 let __ytpro_player_js = null;    // ví dụ: https://www.youtube.com/s/player/XXXX/player_ias.vflset/en_US/base.js
 let __ytpro_client_version = null; // INNERTUBE_CLIENT_VERSION
 
@@ -36,29 +58,6 @@ async function ytproBootstrap() {
     console.log('[YTPRO] Bootstrap fallback – missing jsUrl/clientVersion');
   }
 }
-
-function write(x) {
-  try {
-    if (typeof x === 'object') x = JSON.stringify(x, null, 2);
-    const el = document.getElementById('downytprodiv');
-    if (el) el.innerHTML = x;
-    else console.log('[YTPRO]', x);
-  } catch (e) {
-    console.log('[YTPRO] write error', e);
-  }
-}
-
-
-
-
-var cver="19.35.36";
-var player_id;
-var poToken,visitorData;
-var sig_timestamp,nsig_sc,sig_sc;
-
-
-
-
 
 
 
