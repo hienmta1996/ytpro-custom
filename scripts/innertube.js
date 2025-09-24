@@ -97,7 +97,7 @@ write("Fetching Player JS...");
 
 var player_js=await fetch(`https://www.youtube.com/s/player/${player_id}/player_ias.vflset/en_US/base.js`).then(x => x.text());
 
-const ast = Jinter.parseScript(player_js, { ecmaVersion: 'latest', ranges: true });
+const ast = Jiner.parseScript(player_js, { ecmaVersion: 'latest', ranges: true });
 
 
 
