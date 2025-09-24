@@ -28,7 +28,23 @@ var player_id;
 var poToken,visitorData;
 var sig_timestamp,nsig_sc,sig_sc;
 
+let __ytpro_player_js = null;
+let __ytpro_client_version = null;
 
+async function ytproBootstrap() {
+  if (__ytpro_player_js && __ytpro_client_version) return;
+  const res = await fetch('https://www.youtube.com', { credentials: 'omit' });
+  const html = await res.text();
+
+  // Nếu dính consent/HTML lạ → set cờ & báo lỗi sớm
+  if (/<!DOCTYPE/i.test(html)) throw new Error('BOOTSTRAP_HTML_CONSENT');
+
+  const mJs  = html.match(/"jsUrl":"(\/s\/player\/[^"]+?\/base\.js)"/);
+  const mVer = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
+  if (mJs)  __ytpro_player_js    = 'https://www.youtube.com' + mJs[1].replace(/\\u0026/g, '&');
+  if (mVer) __ytpro_client_version = mVer[1];
+  if (!__ytpro_player_js || !__ytpro_client_version) throw new Error('BOOTSTRAP_MISSING_FIELDS');
+}
 
 
 async function getPo(identifier){
@@ -195,7 +211,14 @@ return url_components.toString();
 
 
 window.getDownloadStreams=async ()=>{
+await ytproBootstrap();
 
+const baseTxt = await fetch(__ytpro_player_js, { credentials: 'omit' }).then(r => r.text());
+
+// Nếu nhận HTML (consent/404), dừng ngay — tránh quăng rác vào Jintr
+if (/^\s*<!DOCTYPE|^\s*<html/i.test(baseTxt)) {
+  throw new Error('PLAYER_JS_HTML_CONSENT_OR_404');
+}
 
 write("Getting Deciphers...");
 
