@@ -4,7 +4,7 @@ Version: 3.8.7
 URI: https://github.com/prateek-chaubey/YTPRO
 */
 
-import Jinter from 'https://cdn.jsdelivr.net/npm/jintr@3.3.1/+esm';
+import Jintr from './vendor/jintr.esm.js';
 import { BG } from 'https://cdn.jsdelivr.net/npm/bgutils-js@3.2.0/dist/index.min.js';
 import {Player,Innertube, ProtoUtils, UniversalCache, Utils } from 'https://cdn.jsdelivr.net/npm/youtubei.js@13.4.0/bundle/browser.min.js';
 
