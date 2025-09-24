@@ -30,36 +30,6 @@ var sig_timestamp,nsig_sc,sig_sc;
 
 
 
-let __ytpro_player_js = null;    // ví dụ: https://www.youtube.com/s/player/XXXX/player_ias.vflset/en_US/base.js
-let __ytpro_client_version = null; // INNERTUBE_CLIENT_VERSION
-
-async function ytproBootstrap() {
-  if (__ytpro_player_js && __ytpro_client_version) return;
-
-  // Tải HTML trang chủ để lấy jsUrl và clientVersion
-  const res = await fetch('https://www.youtube.com', { credentials: 'omit' });
-  const html = await res.text();
-
-  // 1) Lấy jsUrl (đường dẫn tới base.js)
-  //   Thường xuất hiện trong ytcfg hoặc WEB_PLAYER_CONTEXT_CONFIGS
-  //   Ví dụ: "jsUrl":"/s/player/XXXX/player_ias.vflset/en_US/base.js"
-  const mJs = html.match(/"jsUrl":"(\/s\/player\/[^"]+?\/base\.js)"/);
-  if (mJs) {
-    __ytpro_player_js = 'https://www.youtube.com' + mJs[1].replace(/\\u0026/g, '&');
-  }
-
-  // 2) Lấy INNERTUBE_CLIENT_VERSION
-  const mVer = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
-  if (mVer) {
-    __ytpro_client_version = mVer[1];
-  }
-
-  if (!__ytpro_player_js || !__ytpro_client_version) {
-    console.log('[YTPRO] Bootstrap fallback – missing jsUrl/clientVersion');
-  }
-}
-
-
 
 async function getPo(identifier){
 const requestKey = 'O43z0dpjhgX20SCx4KAo';
@@ -225,19 +195,7 @@ return url_components.toString();
 
 
 window.getDownloadStreams=async ()=>{
-// … nếu bạn có logic tự lấy videoId, giữ nguyên …
 
-  // ĐẢM BẢO có player JS URL & client version
-  await ytproBootstrap();
-
-  // Dùng client version khi gọi youtubei (nếu code của bạn cần)
-  const cver = __ytpro_client_version || '2.2024.09.15.00.00'; // fallback an toàn
-
-  // Khi cần tải base.js để giải mã signature/n:
-  if (!__ytpro_player_js) {
-    throw new Error('PLAYER_JS_URL_MISSING');
-  }
-  const baseJsText = await fetch(__ytpro_player_js, { credentials: 'omit' }).then(r => r.text());
 
 write("Getting Deciphers...");
 
