@@ -246,4 +246,3 @@ handlers.nexttrack();
 function playPrev(){
 handlers.previoustrack();
 }
-
