@@ -4,7 +4,7 @@ Version: 3.8.7
 URI: https://github.com/prateek-chaubey/YTPRO
 */
 
-import Jintr from 'https://cdn.jsdelivr.net/gh/hienmta1996/ytpro-custom@1dee958f7fb9d08f0499d0f2a8cd4eeddba0f8d8/scripts/vendor/jintr.esm.js';
+import Jintr from './vendor/jintr.esm.js';
 import { BG } from 'https://cdn.jsdelivr.net/npm/bgutils-js@3.2.0/dist/index.min.js';
 import {Player,Innertube, ProtoUtils, UniversalCache, Utils } from 'https://cdn.jsdelivr.net/npm/youtubei.js@13.4.0/bundle/browser.min.js';
 
@@ -97,7 +97,7 @@ write("Fetching Player JS...");
 
 var player_js=await fetch(`https://www.youtube.com/s/player/${player_id}/player_ias.vflset/en_US/base.js`).then(x => x.text());
 
-const ast = Jiner.parseScript(player_js, { ecmaVersion: 'latest', ranges: true });
+const ast = Jintr.parseScript(player_js, { ecmaVersion: 'latest', ranges: true });
 
 
 
