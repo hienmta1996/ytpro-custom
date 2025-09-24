@@ -32,38 +32,34 @@ let __ytpro_player_js = null;
 let __ytpro_client_version = null;
 
 async function ytproBootstrap() {
-  if (window.__ytpro_player_js && window.__ytpro_client_version) return;
+  if (__ytpro_player_js && __ytpro_client_version) return;
 
-  // 1) thử fetch trang chủ
-  let res = await fetch('https://www.youtube.com/?hl=en&gl=US&persist_hl=1&persist_gl=1', { credentials: 'omit' });
+  // 1) same-origin, mang cookie
+  let res  = await fetch('/?hl=en&gl=US&persist_hl=1&persist_gl=1', { credentials: 'include', cache: 'no-store' });
   let html = await res.text();
 
-  // 2) Nếu nhận HTML consent → set cookie ở phía JS rồi retry 1 lần
+  // 2) Nếu còn thấy consent, thử set cookie bằng JS rồi retry 1 lần
   if (/<!DOCTYPE/i.test(html) || /consent/i.test(html)) {
     try {
-      // set cookie từ JS (vì base page là youtube.com nên document.cookie hợp lệ)
-      document.cookie = "CONSENT=YES+cb.20210328-17-p0.en+FX+123; Path=/; Domain=.youtube.com; " +
-                        "Expires=Fri, 01 Jan 2038 00:00:00 GMT; Secure; SameSite=None";
+      document.cookie = "CONSENT=YES+cb.20210328-17-p0.en+FX+123; Path=/; Domain=.youtube.com; Expires=Fri, 01 Jan 2038 00:00:00 GMT; Secure; SameSite=None";
       document.cookie = "SOCS=CAE=; Path=/; Domain=.youtube.com; Expires=Fri, 01 Jan 2038 00:00:00 GMT; Secure; SameSite=None";
       document.cookie = "PREF=hl=en&gl=US; Path=/; Domain=.youtube.com; Expires=Fri, 01 Jan 2038 00:00:00 GMT; Secure; SameSite=None";
-    } catch (e) {}
+    } catch(e){}
 
-    await new Promise(r => setTimeout(r, 200)); // đợi cookie “dính”
-    res  = await fetch('https://www.youtube.com/?hl=en&gl=US&persist_hl=1&persist_gl=1', { credentials: 'omit' });
+    await new Promise(r=>setTimeout(r,200));
+    res  = await fetch('/?hl=en&gl=US&persist_hl=1&persist_gl=1', { credentials: 'include', cache: 'no-store' });
     html = await res.text();
   }
 
   if (/<!DOCTYPE/i.test(html)) {
-    throw new Error("BOOTSTRAP_HTML_CONSENT"); // vẫn dính consent → báo sớm
+    throw new Error('BOOTSTRAP_HTML_CONSENT'); // nếu vẫn thất bại, sẽ thấy lỗi như log cũ
   }
 
   const mJs  = html.match(/"jsUrl":"(\/s\/player\/[^"]+?\/base\.js)"/);
   const mVer = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
-  if (mJs)  window.__ytpro_player_js     = 'https://www.youtube.com' + mJs[1].replace(/\\u0026/g, '&');
-  if (mVer) window.__ytpro_client_version = mVer[1];
-  if (!window.__ytpro_player_js || !window.__ytpro_client_version) {
-    throw new Error("BOOTSTRAP_MISSING_FIELDS");
-  }
+  if (mJs)  __ytpro_player_js     = mJs[1].replace(/\\u0026/g, '&');   // GIỮ tương đối
+  if (mVer) __ytpro_client_version = mVer[1];
+  if (!__ytpro_player_js || !__ytpro_client_version) throw new Error('BOOTSTRAP_MISSING_FIELDS');
 }
 
 
@@ -170,21 +166,6 @@ resolve("done");
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function decipherUrl(url){
 
 const args = new URLSearchParams(url);
@@ -233,9 +214,7 @@ return url_components.toString();
 window.getDownloadStreams=async ()=>{
 await ytproBootstrap();
 
-const baseTxt = await fetch(__ytpro_player_js, { credentials: 'omit' }).then(r => r.text());
-
-// Nếu nhận HTML (consent/404), dừng ngay — tránh quăng rác vào Jintr
+const baseTxt = await fetch(__ytpro_player_js, { credentials: 'include', cache: 'no-store' }).then(r => r.text());
 if (/^\s*<!DOCTYPE|^\s*<html/i.test(baseTxt)) {
   throw new Error('PLAYER_JS_HTML_CONSENT_OR_404');
 }
