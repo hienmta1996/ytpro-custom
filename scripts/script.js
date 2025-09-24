@@ -975,7 +975,7 @@ id=new URLSearchParams(window.location.search).get("v");
 
 ytproDownDiv.innerHTML="Loading...";
 
-// window.getDownloadStreams();
+window.getDownloadStreams();
 
 }
 
