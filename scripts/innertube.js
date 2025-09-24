@@ -10,16 +10,16 @@ import {Player,Innertube, ProtoUtils, UniversalCache, Utils } from 'https://cdn.
 
 
 
-function write(x){
-
-if(typeof x == "object"){
-x=JSON.stringify(x,null,2)
+function write(x) {
+  try {
+    if (typeof x === 'object') x = JSON.stringify(x, null, 2);
+    const el = document.getElementById('downytprodiv');
+    if (el) el.innerHTML = x;
+    else console.log('[YTPRO]', x);
+  } catch (e) {
+    console.log('[YTPRO] write error', e);
+  }
 }
-var ytproDownDiv=document.getElementById("downytprodiv");
-
-ytproDownDiv.innerHTML=x;
-}
-
 
 
 
@@ -218,6 +218,10 @@ else{
 id=new URLSearchParams(window.location.search).get("v");
 }
 
+console.log("===================== sig_timestamp", sig_timestamp);
+console.log("===================== visitorData", visitorData);
+console.log("===================== poToken", poToken);
+console.log("===================== cver", cver);
 var body={
 "videoId": id,
 "racyCheckOk": true,
@@ -280,15 +284,25 @@ var body={
 
 
 
-var info=await fetch("https://m.youtube.com/youtubei/v1/player?prettyPrint=false",{ 
-method:"POST", 
-body:JSON.stringify(body) 
+var info=await fetch("https://m.youtube.com/youtubei/v1/player?prettyPrint=false",{
+method:"POST",
+body:JSON.stringify(body)
 }).then((res)=>res.json());
 
 
 
 
-// handleDownloadStreams(info);
+try {
+  if (window.__YTPRO_INTERCEPT__ === true) {
+    if (window.Android && typeof Android.onInfo === 'function') {
+      Android.onInfo(JSON.stringify(info));
+    } else if (typeof window.onYtproInfo === 'function') {
+      window.onYtproInfo(info);
+    }
+  }
+} catch (e) {
+  console.error('[YTPRO] onInfo error:', e);
+}
 
 
 
