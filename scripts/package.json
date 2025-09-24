@@ -1,11 +1,11 @@
 {
-  "name": "ytpro",
-  "version": "3.8.7",
+  "name": "ytpro-custom",
+  "version": "1.0.0",
   "description": "All in one YouTube App with AdBlocker, Downloader , Background Player , PIP Mode , Google Gemini ✨ and many more features.",
   "main": "script.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prateek-chaubey/YTPro.git"
+    "url": "https://github.com/hienmta1996/ytpro-custom.git"
   },
   "keywords": [
     "YOUTUBE",
@@ -21,10 +21,6 @@
     "Generative AI",
     "Google Gemini"
   ],
-  "author": "Prateek Chaubey",
+  "author": "Hienmta1996",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/prateek-chaubey/YTPro/issues"
-  },
-  "homepage": "https://github.com/prateek-chaubey/YTPro#readme"
 }
