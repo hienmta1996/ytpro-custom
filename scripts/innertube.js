@@ -54,7 +54,7 @@ async function ytproBootstrap() {
   }
 
   if (/<!DOCTYPE/i.test(html)) {
-    throw new Error('BOOTSTRAP_HTML_CONSENT'); // vẫn dính consent → báo sớm
+    throw new Error("BOOTSTRAP_HTML_CONSENT"); // vẫn dính consent → báo sớm
   }
 
   const mJs  = html.match(/"jsUrl":"(\/s\/player\/[^"]+?\/base\.js)"/);
@@ -62,7 +62,7 @@ async function ytproBootstrap() {
   if (mJs)  window.__ytpro_player_js     = 'https://www.youtube.com' + mJs[1].replace(/\\u0026/g, '&');
   if (mVer) window.__ytpro_client_version = mVer[1];
   if (!window.__ytpro_player_js || !window.__ytpro_client_version) {
-    throw new Error('BOOTSTRAP_MISSING_FIELDS');
+    throw new Error("BOOTSTRAP_MISSING_FIELDS");
   }
 }
 
