@@ -234,7 +234,10 @@ id=window.location.pathname.substr(8,window.location.pathname.length);
 else{
 id=new URLSearchParams(window.location.search).get("v");
 }
-
+console.log("===================== sig_timestamp", sig_timestamp);
+console.log("===================== visitorData", visitorData);
+console.log("===================== poToken", poToken);
+console.log("===================== cver", cver);
 var body={
 "videoId": id,
 "racyCheckOk": true,
