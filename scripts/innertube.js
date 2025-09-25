@@ -28,39 +28,6 @@ var player_id;
 var poToken,visitorData;
 var sig_timestamp,nsig_sc,sig_sc;
 
-let __ytpro_player_js = null;
-let __ytpro_client_version = null;
-
-async function ytproBootstrap() {
-  if (__ytpro_player_js && __ytpro_client_version) return;
-
-  // 1) same-origin, mang cookie
-  let res  = await fetch('/?hl=en&gl=US&persist_hl=1&persist_gl=1', { credentials: 'include', cache: 'no-store' });
-  let html = await res.text();
-
-  // 2) Nếu còn thấy consent, thử set cookie bằng JS rồi retry 1 lần
-  if (/<!DOCTYPE/i.test(html) || /consent/i.test(html)) {
-    try {
-      document.cookie = "CONSENT=YES+cb.20210328-17-p0.en+FX+123; Path=/; Domain=.youtube.com; Expires=Fri, 01 Jan 2038 00:00:00 GMT; Secure; SameSite=None";
-      document.cookie = "SOCS=CAE=; Path=/; Domain=.youtube.com; Expires=Fri, 01 Jan 2038 00:00:00 GMT; Secure; SameSite=None";
-      document.cookie = "PREF=hl=en&gl=US; Path=/; Domain=.youtube.com; Expires=Fri, 01 Jan 2038 00:00:00 GMT; Secure; SameSite=None";
-    } catch(e){}
-
-    await new Promise(r=>setTimeout(r,200));
-    res  = await fetch('/?hl=en&gl=US&persist_hl=1&persist_gl=1', { credentials: 'include', cache: 'no-store' });
-    html = await res.text();
-  }
-
-  if (/<!DOCTYPE/i.test(html)) {
-    throw new Error('BOOTSTRAP_HTML_CONSENT'); // nếu vẫn thất bại, sẽ thấy lỗi như log cũ
-  }
-
-  const mJs  = html.match(/"jsUrl":"(\/s\/player\/[^"]+?\/base\.js)"/);
-  const mVer = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
-  if (mJs)  __ytpro_player_js     = mJs[1].replace(/\\u0026/g, '&');   // GIỮ tương đối
-  if (mVer) __ytpro_client_version = mVer[1];
-  if (!__ytpro_player_js || !__ytpro_client_version) throw new Error('BOOTSTRAP_MISSING_FIELDS');
-}
 
 
 async function getPo(identifier){
@@ -212,12 +179,6 @@ return url_components.toString();
 
 
 window.getDownloadStreams=async ()=>{
-await ytproBootstrap();
-
-const baseTxt = await fetch(__ytpro_player_js, { credentials: 'include', cache: 'no-store' }).then(r => r.text());
-if (/^\s*<!DOCTYPE|^\s*<html/i.test(baseTxt)) {
-  throw new Error('PLAYER_JS_HTML_CONSENT_OR_404');
-}
 
 write("Getting Deciphers...");
 
